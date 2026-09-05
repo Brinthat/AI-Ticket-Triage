@@ -66,6 +66,8 @@ python3 dashboard.py
 - 77 tickets flagged priority 5 (critical) out of 400, surfaced at the
   top of the queue instead of buried in arrival order.
 - Full category and priority breakdown in `report.md` / `dashboard.html`.
+<img width="1133" height="585" alt="image" src="https://github.com/user-attachments/assets/249a8727-1c7d-43c4-b9ab-eaadca8af236" />
+
 
 ## Note
 
