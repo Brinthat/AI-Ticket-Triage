@@ -62,14 +62,12 @@ python3 dashboard.py
 ## Results 
 
 - **62% estimated reduction** in review time (4 min/ticket manual vs
-  1.5 min/ticket to confirm an AI-scored ticket) — this is where the
-  resume's "60%" figure comes from; it's a real calculation, not a
-  guess, and you can defend the assumptions if asked.
+  1.5 min/ticket to confirm an AI-scored ticket) 
 - 77 tickets flagged priority 5 (critical) out of 400, surfaced at the
   top of the queue instead of buried in arrival order.
 - Full category and priority breakdown in `report.md` / `dashboard.html`.
 
-## Sumamry
+## Note
 
 - **What it does**: ingests unstructured ticket text, uses an LLM to
   extract structured signal (category + urgency) that isn't in the
@@ -79,11 +77,7 @@ python3 dashboard.py
 - **Why the fallback mode matters**: shows you designed for graceful
   degradation and cost control, not just "call the API and hope" —
   a real production concern once you're processing 10,000+ tickets/month.
-- **The 60% number**: walk through the assumption (4 min manual vs
-  1.5 min AI-assisted) rather than presenting it as a measured fact
-  from a real deployment, since this is demo data. Interviewers respect
-  "here's how I'd validate this against real data" more than an
-  unexplained stat.
+  
 
 ## Scaling this to 10,000+/month for real
 
