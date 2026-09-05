@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ticket Triage Dashboard</title>
+<style>
+  :root {
+    --ink: #1c2321;
+    --paper: #f6f5f1;
+    --line: #d8d4c8;
+    --signal: #b5482a;
+    --muted: #6b6a63;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Iowan Old Style', 'Georgia', serif;
+    padding: 48px 32px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1 {
+    font-size: 30px;
+    margin: 0 0 4px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .sub { color: var(--muted); font-size: 15px; margin-bottom: 36px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 40px;
+  }
+  .stat { background: var(--paper); padding: 20px 18px; }
+  .stat .num { font-size: 32px; font-weight: 600; line-height: 1; }
+  .stat .label { color: var(--muted); font-size: 13px; margin-top: 6px; font-family: -apple-system, sans-serif; }
+  .stat.hi .num { color: var(--signal); }
+  section { margin-bottom: 40px; }
+  h2 {
+    font-family: -apple-system, sans-serif;
+    font-size: 13px;
+    text-transform: none;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    text-align: left;
+    font-family: -apple-system, sans-serif;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 6px 10px 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .prio {
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+    font-family: -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .p5 { background: #f0d9d3; color: #8a2e17; }
+  .p4 { background: #f5e6d3; color: #8a5a17; }
+  .p3 { background: #eef0e5; color: #55611f; }
+  .p2, .p1 { background: #e7e6e0; color: var(--muted); }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-family: -apple-system, sans-serif; font-size: 13px;}
+  .bar-label { width: 130px; flex-shrink: 0; color: var(--ink); }
+  .bar-track { flex: 1; background: var(--line); height: 14px; position: relative; }
+  .bar-fill { background: var(--signal); height: 100%; opacity: 0.75; }
+  .bar-count { width: 40px; text-align: right; color: var(--muted); flex-shrink: 0; }
+  footer { color: var(--muted); font-size: 12px; font-family: -apple-system, sans-serif; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AI Ticket Triage &mdash; Results</h1>
+  <div class="sub">100 tickets processed &middot; mode: live (Claude API)</div>
+
+  <div class="stats">
+    <div class="stat hi"><div class="num">62%</div><div class="label">Est. review time saved</div></div>
+    <div class="stat"><div class="num">34</div><div class="label">Critical (priority 5)</div></div>
+    <div class="stat"><div class="num">6.7h</div><div class="label">Manual review time</div></div>
+    <div class="stat"><div class="num">2.5h</div><div class="label">AI-assisted review time</div></div>
+  </div>
+
+  <section>
+    <h2>Volume by category</h2>
+    <div class="bar-row">
+      <div class="bar-label">bug</div>
+      <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      <div class="bar-count">46</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">billing</div>
+      <div class="bar-track"><div class="bar-fill" style="width:36%"></div></div>
+      <div class="bar-count">17</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">account</div>
+      <div class="bar-track"><div class="bar-fill" style="width:30%"></div></div>
+      <div class="bar-count">14</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">cancellation</div>
+      <div class="bar-track"><div class="bar-fill" style="width:21%"></div></div>
+      <div class="bar-count">10</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">security</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13%"></div></div>
+      <div class="bar-count">6</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">praise</div>
+      <div class="bar-track"><div class="bar-fill" style="width:6%"></div></div>
+      <div class="bar-count">3</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">feature_request</div>
+      <div class="bar-track"><div class="bar-fill" style="width:6%"></div></div>
+      <div class="bar-count">3</div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">technical</div>
+      <div class="bar-track"><div class="bar-fill" style="width:2%"></div></div>
+      <div class="bar-count">1</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Top priority tickets</h2>
+    <table>
+      <tr><th>ID</th><th>Priority</th><th>Category</th><th>Customer</th><th>Summary</th></tr>
+      <tr>
+          <td>2</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Marcus Lee</td>
+          <td>Customer is experiencing a production outage with all API requests returning 500 errors for the past 40 minutes, impacting live end users.</td>
+        </tr>
+<tr>
+          <td>4</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Diego Torres</td>
+          <td>Customer lost all saved templates after a morning app update and needs them urgently restored as they are used daily.</td>
+        </tr>
+<tr>
+          <td>11</td>
+          <td><span class="prio p5">5</span></td>
+          <td>security</td>
+          <td>Chloe Martin</td>
+          <td>Customer is reporting repeated failed login attempts from unknown IP addresses and wants to know if their account has been compromised.</td>
+        </tr>
+<tr>
+          <td>19</td>
+          <td><span class="prio p5">5</span></td>
+          <td>account</td>
+          <td>Diego Torres</td>
+          <td>Admin account is locked and user needs urgent access to complete time-sensitive payroll approvals.</td>
+        </tr>
+<tr>
+          <td>22</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Ravi Kumar</td>
+          <td>Customer's webhook endpoint has stopped receiving events since yesterday afternoon despite the status page showing no issues, causing unprocessed orders to accumulate.</td>
+        </tr>
+<tr>
+          <td>24</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Noah Fischer</td>
+          <td>Customer lost all saved templates following a morning app update and needs them urgently restored.</td>
+        </tr>
+<tr>
+          <td>25</td>
+          <td><span class="prio p5">5</span></td>
+          <td>security</td>
+          <td>Liam O'Brien</td>
+          <td>Customer is reporting repeated failed login attempts from unfamiliar IP addresses and wants to know if their account has been compromised.</td>
+        </tr>
+<tr>
+          <td>27</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Diego Torres</td>
+          <td>Customer lost all saved templates after a morning app update and needs them urgently restored as they are used daily.</td>
+        </tr>
+<tr>
+          <td>28</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Sam Osei</td>
+          <td>Customer is experiencing a production outage with all API requests returning 500 errors for the past 40 minutes, impacting live end users.</td>
+        </tr>
+<tr>
+          <td>32</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Ana Souza</td>
+          <td>Customer is experiencing a production outage with all API requests returning 500 errors for the past 40 minutes, impacting live end users.</td>
+        </tr>
+<tr>
+          <td>38</td>
+          <td><span class="prio p5">5</span></td>
+          <td>account</td>
+          <td>Fatima Noor</td>
+          <td>Admin account is locked and user cannot log in to the console, blocking urgent payroll approvals.</td>
+        </tr>
+<tr>
+          <td>46</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Sam Osei</td>
+          <td>Customer is experiencing a production outage with all API requests returning 500 errors for the past 40 minutes, impacting live end users.</td>
+        </tr>
+<tr>
+          <td>47</td>
+          <td><span class="prio p5">5</span></td>
+          <td>account</td>
+          <td>Noah Fischer</td>
+          <td>Admin account is locked and user cannot log in, blocking time-sensitive payroll approvals.</td>
+        </tr>
+<tr>
+          <td>48</td>
+          <td><span class="prio p5">5</span></td>
+          <td>bug</td>
+          <td>Grace Adeyemi</td>
+          <td>Customer is experiencing a production outage with all API requests returning 500 errors for the past 40 minutes, impacting live end users.</td>
+        </tr>
+<tr>
+          <td>54</td>
+          <td><span class="prio p5">5</span></td>
+          <td>account</td>
+          <td>Ana Souza</td>
+          <td>Admin account is locked and user cannot log in, blocking time-sensitive payroll approvals.</td>
+        </tr>
+    </table>
+  </section>
+
+  <footer>Generated from tickets.db by dashboard.py &middot; synthetic demo data</footer>
+</div>
+</body>
+</html>
