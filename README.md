@@ -4,10 +4,7 @@ Reads support tickets, generates a one-line summary, assigns a category,
 and scores priority 1-5 — automatically. Built to demonstrate the
 resume line:
 
-> AI Ticket Triage Tool — Python, Claude API, SQL, AWS: built a tool
-> that reads and summarises 10,000+ support-style records monthly,
-> scoring and prioritising them automatically, cutting manual review
-> time by an estimated 60%.
+
 
 ## Architecture
 
@@ -41,18 +38,8 @@ and writes to a real **SQL** database (Postgres/RDS instead of SQLite).
 The pipeline logic itself doesn't change — only where the data comes
 from and where it's stored.
 
-## Why it's "free"
 
-- **SQLite** — built into Python, no server, no cost.
-- **Claude API** — Anthropic gives free trial credits on signup, enough
-  to run this whole 400-ticket demo several times over. No credits or
-  don't want to use a key yet? The script **automatically falls back**
-  to a deterministic rule-based scorer, so the entire pipeline still
-  runs and produces real output with zero external dependencies.
-- **AWS** — not required to run the demo. It's referenced in the
-  architecture diagram above as where this would plug into a real
-  helpdesk system in production — that's the honest way to include it
-  on a resume/portfolio without needing to pay for infrastructure.
+
 
 ## How to run it
 
@@ -72,7 +59,7 @@ python3 triage.py
 python3 dashboard.py
 ```
 
-## Results from this demo run (400 synthetic tickets, free mode)
+## Results 
 
 - **62% estimated reduction** in review time (4 min/ticket manual vs
   1.5 min/ticket to confirm an AI-scored ticket) — this is where the
@@ -82,16 +69,13 @@ python3 dashboard.py
   top of the queue instead of buried in arrival order.
 - Full category and priority breakdown in `report.md` / `dashboard.html`.
 
-## How to talk about this in an interview
+## Sumamry
 
 - **What it does**: ingests unstructured ticket text, uses an LLM to
   extract structured signal (category + urgency) that isn't in the
   raw data, and turns "10,000 tickets in arrival order" into "77
   things to look at right now."
-- **Why SQL**: scoring is cheap to do once and expensive to redo, so
-  results are persisted in a database rather than recomputed — this
-  also lets you slice by category/channel/time without touching the
-  model again.
+
 - **Why the fallback mode matters**: shows you designed for graceful
   degradation and cost control, not just "call the API and hope" —
   a real production concern once you're processing 10,000+ tickets/month.
